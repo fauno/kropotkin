@@ -31,18 +31,12 @@ class UrlTitle
 
       resource = OpenGraph.fetch(url)
 
-      debug "Fetching #{url}"
-
       if resource
-        m.reply "#{m.user.nick}: #{HTMLEntities.new.decode(resource.title)}" if not resource.title.empty?
-        debug resource.title
-        debug HTMLEntities.new.decode(resource.title)
-        m.reply resource.description if not resource.description.empty?
+        m.reply HTMLEntities.new.decode(resource.title) unless resource.title.empty?
+        m.reply resource.description[0..140] unless resource.description.empty?
       else
         title = Net::HTTP.get(uri).gsub(/\n/, ' ').squeeze(' ').scan(/<title>(.*?)<\/title>/i)[0][0]
-        debug title
-        debug HTMLEntities.new.decode(title)
-        m.reply "#{m.user.nick}: #{HTMLEntities.new.decode(title)}" if not title.empty?
+        m.reply HTMLEntities.new.decode(title) unless title.empty?
       end
     end
   end
