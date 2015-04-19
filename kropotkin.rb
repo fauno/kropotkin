@@ -18,7 +18,7 @@ kropotkin = Cinch::Bot.new do
     m.reply "o/"
   end
 
-  on :message, /bug/ do |m|
+  on :message, /\bbug/ do |m|
     m.reply "patches welcome", true
   end
 
