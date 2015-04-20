@@ -16,12 +16,12 @@ kropotkin = Cinch::Bot.new do
     c.plugins.plugins = [ Empathy, UrlTitle, AcceptInvite, Adhocracia ]
   end
 
-  on :message, /bug/ do |m|
+  on :message, /bug/i do |m|
     m.reply "patches welcome", true
   end
 
   # Corregir
-  on :message, /open ?source/ do |m|
+  on :message, /open ?source/i do |m|
     m.reply "no querrás decir software libre?", true
   end
 end

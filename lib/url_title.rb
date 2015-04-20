@@ -20,7 +20,10 @@ class UrlTitle
 # Tomamos la extensión, si la tiene nos fijamos si está permitida
       ext = url.scan(/\.([a-z0-9]+)([?#].*)?$/)
 
-      return if not ext.nil? and not ext.empty? and not [ '.htm', '.php', '.asp', '.html' ].include? ext.first.first
+      if not ext.nil? and not ext.empty? and not [ 'htm', 'php', 'asp', 'html' ].include? ext.first.first
+        m.reply "no puedo leer eso"
+        return
+      end
 
       # Ignorar lo que no sea html
       Net::HTTP.start uri.host, uri.port, :use_ssl => uri.scheme == 'https' do |http|
