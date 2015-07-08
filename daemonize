@@ -6,5 +6,10 @@ pushd $(dirname "$(realpath "$0")")
 
 test -f tmp/kropotkin.pid && pkill --pidfile tmp/kropotkin.pid || true
 
-bundle exec ruby kropotkin.rb &
+pgrep tor &>/dev/null && which torify &>/dev/null && torify=torify
+pgrep tor &>/dev/null && which torsocks &>/dev/null && torify=torsocks
+
+test -z "$torify" && echo "Instala tor y torsocks para anonimizar"
+
+$torify bundle exec ruby kropotkin.rb &
 echo $! >tmp/kropotkin.pid
