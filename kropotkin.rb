@@ -3,10 +3,10 @@ require 'cinch'
 require './lib/humanize'
 require './lib/url_title'
 require './lib/empathy'
-require './lib/invite.rb'
-require './lib/adhocracia.rb'
+require './lib/invite'
+require './lib/adhocracia'
 
-NICK = "kropotkin"
+NICK = 'kropotkin'
 
 # Array de redes e instancias del bot
 $networks = [
@@ -14,12 +14,12 @@ $networks = [
     bot: nil,
     port: 6697,
     ssl: true,
-    channels: [ "#lab" ] },
+    channels: [ '#lab' ] },
   { server: 'irc.pirateirc.net',
     bot: nil,
     port: 6697,
     ssl: true,
-    channels: [ "#ppar" ] }
+    channels: [ '#ppar' ] }
 ]
 
 instances = []
@@ -46,7 +46,7 @@ $networks.each do |n|
     end
 
     on :message, /^[!,]\w+/ do |m|
-      m.reply ['a quién le habla?', 'hay un bot por acá?'].sample
+      m.reply ['a quién le habla?', 'hay un bot por acá? :O', '¬¬'].sample
     end
   end
 

@@ -9,10 +9,9 @@ class Adhocracia
     super
   end
 
-  match /hay que hacer/, use_prefix: false, method: :adhocracia
+  match /ha(y|bria|bría) que/, use_prefix: false, method: :adhocracia
 
   def adhocracia(m)
-    m.reply "#{m.user.nick}: che qué buena idea, por qué no la hacés?"
+    m.reply 'che qué buena idea, por qué no la hacés?', true
   end
-
 end
