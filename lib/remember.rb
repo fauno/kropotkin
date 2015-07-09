@@ -20,7 +20,10 @@ class Remember
     else
       seen_in_channel(m.user.nick, m.channel.name)
 
-      m.reply ['qué tal?', ':)', 'hola', 'hola!', 'o/'].sample, true
+      # no hace falta saludar todo el tiempo :)
+      if [ true, false, false ].sample
+        m.reply ['qué tal?', ':)', 'hola', 'hola!', 'o/'].sample, true
+      end
     end
   end
 
