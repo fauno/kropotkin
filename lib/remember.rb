@@ -8,6 +8,8 @@ class Remember
   attr_reader :dbm
 
   def listen(m)
+    return if m.user.nick == m.bot.config.nick
+
     @dbm ||= GDBM.new("#{m.bot.config.server}.db", 0600, GDBM::SYNC)
 
     unless @dbm.key?(m.user.nick)
