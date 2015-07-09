@@ -7,13 +7,11 @@ class Remember
 
   attr_reader :dbm
 
-  def initialize(*args)
-    @dbm ||= GDBM.new('remember.db', 0600, GDBM::SYNC)
-  end
-
   def listen(m)
+    @dbm ||= GDBM.new("#{m.bot.config.server}.db", 0600, GDBM::SYNC)
+
     unless @dbm.key?(m.user.nick)
-      @dbm[m.user.nick] ||= Time.now
+      @dbm[m.user.nick] ||= Time.now.to_s
       m.reply ['qué tal?', ':)', 'hola', 'hola!', 'o/'].sample, true
     else
       m.reply ['o/','\o','ea'].sample, true
