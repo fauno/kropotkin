@@ -17,29 +17,31 @@ class UrlTitle
       url = URI.encode(url)
       uri = URI(url)
 
-# Tomamos la extensión, si la tiene nos fijamos si está permitida
-      ext = url.scan(/\.([a-z0-9]+)([?#].*)?$/)
-
-      if not ext.nil? and not ext.empty? and not [ 'htm', 'php', 'asp', 'html' ].include? ext.first.first
-        m.reply "no puedo leer eso"
-        return
+      # icecast devuelve text/html para los los streams..
+      if uri.path.end_with?('ogg', 'mp3', 'ogv', 'webm', 'mp4')
+        info 'es un archivo de medios'
+        m.reply 'no puedo leer eso', false, true
+        next
       end
 
       # Ignorar lo que no sea html
-      Net::HTTP.start uri.host, uri.port, :use_ssl => uri.scheme == 'https' do |http|
-        if not http.head(uri.path)['content-type'] =~ /text\/html/
-          return
+      Net::HTTP.start uri.host, uri.port, use_ssl: uri.scheme == 'https' do |http|
+        info 'averiguando si es un html'
+        if not http.head(uri.path)['content-type'] =~ /\Atext\/html\Z/
+          info 'no lo es'
+          next
         end
       end
 
+      info 'opengraph'
       resource = OpenGraph.fetch(url)
 
       if resource
-        m.reply HTMLEntities.new.decode(resource.title) unless resource.title.empty?
-        m.reply resource.description[0..140] unless resource.description.empty?
+        m.reply(HTMLEntities.new.decode(resource.title), false, true) unless resource.title.empty?
+        m.reply(resource.description[0..140], false, true) unless resource.description.empty?
       else
         title = Net::HTTP.get(uri).gsub(/\n/, ' ').squeeze(' ').scan(/<title>(.*?)<\/title>/i)[0][0]
-        m.reply HTMLEntities.new.decode(title) unless title.empty?
+        m.reply(HTMLEntities.new.decode(title), false, true) unless title.empty?
       end
     end
   end
