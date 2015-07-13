@@ -17,7 +17,7 @@ class Remember
 
     if channels(m.user.nick).include? m.channel.name
       # no hace falta saludar todo el tiempo :)
-      if [ true, false, false ].sample
+      if [ true, false, false, false, false ].sample
         m.reply ['o/','\o','ea'].sample, true
       end
     else
