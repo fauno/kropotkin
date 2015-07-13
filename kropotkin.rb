@@ -5,6 +5,7 @@ require './lib/url_title'
 require './lib/empathy'
 require './lib/invite'
 require './lib/adhocracia'
+require './lib/remember'
 
 NICK = 'kropotkin'
 
@@ -15,7 +16,7 @@ $networks = [
     port: 6697,
     ssl: true,
     channels: [ '#lab' ] },
-  { server: 'irc.pirateirc.net',
+  { server: 'pirateircfor3esg.onion',
     bot: nil,
     port: 6697,
     ssl: true,
@@ -33,7 +34,7 @@ $networks.each do |n|
       c.port = n[:port]
       c.channels = n[:channels]
       c.ssl.use = n[:ssl] if not n[:ssl].nil?
-      c.plugins.plugins = [ Empathy, UrlTitle, AcceptInvite, Adhocracia ]
+      c.plugins.plugins = [ Empathy, UrlTitle, AcceptInvite, Adhocracia, Remember ]
     end
 
     on :message, /\bbugs?\b/i do |m|
