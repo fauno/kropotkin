@@ -51,11 +51,11 @@ class UrlTitle
   end
 
   def anti_blockflare title
-        if title =~ /cloudflare/i
-          title.gsub! /cloudflare/i, "BlockFlare"
-          title += " -  (ノಠ益ಠ)ノ彡┻━┻ "
-        end
-        return title
+    if title =~ /cloudflare/i
+      title.gsub! /cloudflare/i, "BlockFlare"
+      title += " - (ノಠ益ಠ)ノ彡┻━┻ "
+    end
+    return title
 
   end
 
