@@ -37,13 +37,26 @@ class UrlTitle
       resource = OpenGraph.fetch(url)
 
       if resource
-        m.reply(HTMLEntities.new.decode(resource.title), false, true) unless resource.title.empty?
+        title = anti_blockflare( HTMLEntities.new.decode(resource.title) )
+
+        m.reply(title, false, true) unless resource.title.empty?
         m.reply(resource.description[0..140], false, true) unless resource.description.empty?
       else
         title = Net::HTTP.get(uri).gsub(/\n/, ' ').squeeze(' ').scan(/<title>(.*?)<\/title>/i)[0][0]
-        m.reply(HTMLEntities.new.decode(title), false, true) unless title.empty?
+        title = HTMLEntities.new.decode(title)
+        title = anti_blockflare( title )
+        m.reply( title, false, true) unless title.empty?
       end
     end
+  end
+
+  def anti_blockflare title
+        if title =~ /cloudflare/i
+          title.gsub! /cloudflare/i, "BlockFlare"
+          title += " -  (ノಠ益ಠ)ノ彡┻━┻ "
+        end
+        return title
+
   end
 
 end
