@@ -1,4 +1,5 @@
 # encoding: utf-8
+require 'yaml'
 require 'cinch'
 require './lib/humanize'
 require './lib/url_title'
@@ -7,21 +8,12 @@ require './lib/invite'
 require './lib/adhocracia'
 require './lib/remember'
 
-NICK = 'kropotkin'
+# Carga de la configuracion
+config = YAML.load_file("config.yml")
+NICK = config['nick']
 
 # Array de redes e instancias del bot
-$networks = [
-  { server: 'irc.hackcoop.com.ar',
-    bot: nil,
-    port: 6697,
-    ssl: true,
-    channels: [ '#lab' ] },
-  { server: 'pirateircfor3esg.onion',
-    bot: nil,
-    port: 6697,
-    ssl: true,
-    channels: [ '#ppar' ] }
-]
+$networks = config['networks']
 
 instances = []
 
