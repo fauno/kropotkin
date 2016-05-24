@@ -22,10 +22,10 @@ $networks.each do |n|
   n[:bot] = Cinch::Bot.new do
     configure do |c|
       c.nick = NICK
-      c.server = n[:server]
-      c.port = n[:port]
-      c.channels = n[:channels]
-      c.ssl.use = n[:ssl] if not n[:ssl].nil?
+      c.server = n['server']
+      c.port = n['port']
+      c.channels = n['channels']
+      c.ssl.use = n['ssl'] if not n['ssl'].nil?
       c.plugins.plugins = [ Empathy, UrlTitle, AcceptInvite, Adhocracia, Remember ]
     end
 

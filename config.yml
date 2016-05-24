@@ -1,0 +1,16 @@
+---
+nick: kropotkin
+
+networks:
+  - server: irc.hackcoop.com.ar
+    bot: nil
+    port: 6697
+    ssl: true
+    channels:
+      - "#kropotest"
+#  - server: bla.pirata
+#    bot: nil
+#    port: 6697
+#    ssl: true
+#    channels:
+#      - "#kropotest"
