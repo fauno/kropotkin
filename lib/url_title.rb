@@ -10,10 +10,10 @@ class UrlTitle
     super
   end
 
-  match /https?:\/\/[^'"]+/, use_prefix: false, method: :fetch_title
+  match %r{/https?:\/\/[^'"]+/}, use_prefix: false, method: :fetch_title
 
   def fetch_title(m)
-    m.message.scan(/https?:\/\/[^'" #]+/).each do |url|
+    m.message.scan(%r{/https?:\/\/[^'" #]+/}).each do |url|
       url = URI.encode(url)
       uri = URI(url)
 
@@ -25,9 +25,10 @@ class UrlTitle
       end
 
       # Ignorar lo que no sea html
-      Net::HTTP.start uri.host, uri.port, use_ssl: uri.scheme == 'https' do |http|
+      Net::HTTP.start uri.host, uri.port,
+                      use_ssl: uri.scheme == 'https' do |http|
         info 'averiguando si es un html'
-        if not http.head(uri.path)['content-type'] =~ /\Atext\/html\Z/
+        unless http.head(uri.path)['content-type'] =~ %r{/\Atext\/html\Z/}
           info 'no lo es'
           next
         end
@@ -37,26 +38,26 @@ class UrlTitle
       resource = OpenGraph.fetch(url)
 
       if resource
-        title = anti_blockflare( HTMLEntities.new.decode(resource.title) )
+        title = anti_blockflare(HTMLEntities.new.decode(resource.title))
 
         m.reply(title, false, true) unless resource.title.empty?
-        m.reply(resource.description[0..140], false, true) unless resource.description.empty?
+        m.reply(resource.description[0..140], false,
+                true) unless resource.description.empty?
       else
-        title = Net::HTTP.get(uri).gsub(/\n/, ' ').squeeze(' ').scan(/<title>(.*?)<\/title>/i)[0][0]
+        title = Net::HTTP.get(uri).tr("\n", ' ').squeeze(' ').scan(
+          %r{/<title>(.*?)<\/title>/i}
+        )[0][0]
         title = HTMLEntities.new.decode(title)
-        title = anti_blockflare( title )
-        m.reply( title, false, true) unless title.empty?
+        title = anti_blockflare(title)
+        m.reply(title, false, true) unless title.empty?
       end
     end
   end
 
-  def anti_blockflare title
+  def anti_blockflare(title)
     if title =~ /cloudflare/i
-      title.gsub! /cloudflare/i, "BlockFlare"
+      title.gsub! %r{/cloudflare/i}, 'BlockFlare'
       title += " - (ノಠ益ಠ)ノ彡┻━┻ "
     end
-    return title
-
   end
-
 end
