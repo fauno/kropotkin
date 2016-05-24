@@ -10,10 +10,10 @@ class UrlTitle
     super
   end
 
-  match %r{/https?:\/\/[^'"]+/}, use_prefix: false, method: :fetch_title
+  match /https?:\/\/[^'"]+/, use_prefix: false, method: :fetch_title
 
   def fetch_title(m)
-    m.message.scan(%r{/https?:\/\/[^'" #]+/}).each do |url|
+    m.message.scan(/https?:\/\/[^'" #]+/).each do |url|
       url = URI.encode(url)
       uri = URI(url)
 
@@ -28,7 +28,7 @@ class UrlTitle
       Net::HTTP.start uri.host, uri.port,
                       use_ssl: uri.scheme == 'https' do |http|
         info 'averiguando si es un html'
-        unless http.head(uri.path)['content-type'] =~ %r{/\Atext\/html\Z/}
+        unless http.head(uri.path)['content-type'] =~ /\Atext\/html\Z/
           info 'no lo es'
           next
         end
@@ -45,7 +45,7 @@ class UrlTitle
                 true) unless resource.description.empty?
       else
         title = Net::HTTP.get(uri).tr("\n", ' ').squeeze(' ').scan(
-          %r{/<title>(.*?)<\/title>/i}
+          /<title>(.*?)<\/title>/i
         )[0][0]
         title = HTMLEntities.new.decode(title)
         title = anti_blockflare(title)
@@ -56,8 +56,9 @@ class UrlTitle
 
   def anti_blockflare(title)
     if title =~ /cloudflare/i
-      title.gsub! %r{/cloudflare/i}, 'BlockFlare'
-      title += " - (ノಠ益ಠ)ノ彡┻━┻ "
+      title.gsub! /cloudflare/i, 'BlockFlare'
+      title + " - (ノಠ益ಠ)ノ彡┻━┻ "
     end
+    title
   end
 end
