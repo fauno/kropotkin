@@ -10,18 +10,14 @@ require './lib/remember'
 
 # Carga de la configuracion
 config = YAML.load_file('config.yml')
-NICK = config['nick']
-
-# Array de redes e instancias del bot
-$networks = config['networks']
 
 instances = []
 
 # Por cada red generar una instancia del cyborg
-$networks.each do |n|
+config['networks'].each do |n|
   n[:bot] = Cinch::Bot.new do
     configure do |c|
-      c.nick = NICK
+      c.nick = config['nick']
       c.server = n['server']
       c.port = n['port']
       c.channels = n['channels']
