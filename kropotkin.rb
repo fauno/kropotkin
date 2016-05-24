@@ -9,7 +9,7 @@ require './lib/adhocracia'
 require './lib/remember'
 
 # Carga de la configuracion
-config = YAML.load_file("config.yml")
+config = YAML.load_file('config.yml')
 NICK = config['nick']
 
 # Array de redes e instancias del bot
@@ -25,8 +25,8 @@ $networks.each do |n|
       c.server = n['server']
       c.port = n['port']
       c.channels = n['channels']
-      c.ssl.use = n['ssl'] if not n['ssl'].nil?
-      c.plugins.plugins = [ Empathy, UrlTitle, AcceptInvite, Adhocracia, Remember ]
+      c.ssl.use = n['ssl'] unless n['ssl'].nil?
+      c.plugins.plugins = [Empathy, UrlTitle, AcceptInvite, Adhocracia, Remember]
     end
 
     on :message, /\bbugs?\b/i do |m|
@@ -48,4 +48,4 @@ $networks.each do |n|
 end
 
 # Esperar que terminen!
-instances.each { |i| i.join }
+instances.each(&:join)
