@@ -25,9 +25,10 @@ class UrlTitle
       end
 
       # Ignorar lo que no sea html
-      Net::HTTP.start uri.host, uri.port, use_ssl: uri.scheme == 'https' do |http|
+      Net::HTTP.start uri.host, uri.port,
+                      use_ssl: uri.scheme == 'https' do |http|
         info 'averiguando si es un html'
-        if not http.head(uri.path)['content-type'] =~ /\Atext\/html\Z/
+        unless http.head(uri.path)['content-type'] =~ /\Atext\/html\Z/
           info 'no lo es'
           next
         end
@@ -37,13 +38,27 @@ class UrlTitle
       resource = OpenGraph.fetch(url)
 
       if resource
-        m.reply(HTMLEntities.new.decode(resource.title), false, true) unless resource.title.empty?
-        m.reply(resource.description[0..140], false, true) unless resource.description.empty?
+        title = anti_blockflare(HTMLEntities.new.decode(resource.title))
+
+        m.reply(title, false, true) unless resource.title.empty?
+        m.reply(resource.description[0..140], false,
+                true) unless resource.description.empty?
       else
-        title = Net::HTTP.get(uri).gsub(/\n/, ' ').squeeze(' ').scan(/<title>(.*?)<\/title>/i)[0][0]
-        m.reply(HTMLEntities.new.decode(title), false, true) unless title.empty?
+        title = Net::HTTP.get(uri).tr("\n", ' ').squeeze(' ').scan(
+          /<title>(.*?)<\/title>/i
+        )[0][0]
+        title = HTMLEntities.new.decode(title)
+        title = anti_blockflare(title)
+        m.reply(title, false, true) unless title.empty?
       end
     end
   end
 
+  def anti_blockflare(title)
+    if title =~ /cloudflare/i
+      title.gsub! /cloudflare/i, 'BlockFlare'
+      title + " - (ノಠ益ಠ)ノ彡┻━┻ "
+    end
+    title
+  end
 end
