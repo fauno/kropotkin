@@ -19,6 +19,7 @@ config['networks'].each do |n|
     configure do |c|
       c.nick = config['nick']
       c.user = config['nick']
+      c.password = n['password'] if n['password']
       c.server = n['server']
       c.port = n['port']
       c.channels = n['channels']
