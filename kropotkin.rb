@@ -18,6 +18,7 @@ config['networks'].each do |n|
   n[:bot] = Cinch::Bot.new do
     configure do |c|
       c.nick = config['nick']
+      c.user = config['nick']
       c.server = n['server']
       c.port = n['port']
       c.channels = n['channels']
