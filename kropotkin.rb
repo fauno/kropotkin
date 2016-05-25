@@ -1,4 +1,5 @@
 # encoding: utf-8
+require 'yaml'
 require 'cinch'
 require './lib/humanize'
 require './lib/url_title'
@@ -7,34 +8,21 @@ require './lib/invite'
 require './lib/adhocracia'
 require './lib/remember'
 
-NICK = 'kropotkin'
-
-# Array de redes e instancias del bot
-$networks = [
-  { server: 'irc.hackcoop.com.ar',
-    bot: nil,
-    port: 6697,
-    ssl: true,
-    channels: [ '#lab' ] },
-  { server: 'pirateircfor3esg.onion',
-    bot: nil,
-    port: 6697,
-    ssl: true,
-    channels: [ '#ppar' ] }
-]
+# Carga de la configuracion
+config = YAML.load_file('config.yml')
 
 instances = []
 
 # Por cada red generar una instancia del cyborg
-$networks.each do |n|
+config['networks'].each do |n|
   n[:bot] = Cinch::Bot.new do
     configure do |c|
-      c.nick = NICK
-      c.server = n[:server]
-      c.port = n[:port]
-      c.channels = n[:channels]
-      c.ssl.use = n[:ssl] if not n[:ssl].nil?
-      c.plugins.plugins = [ Empathy, UrlTitle, AcceptInvite, Adhocracia, Remember ]
+      c.nick = config['nick']
+      c.server = n['server']
+      c.port = n['port']
+      c.channels = n['channels']
+      c.ssl.use = n['ssl'] unless n['ssl'].nil?
+      c.plugins.plugins = [Empathy, UrlTitle, AcceptInvite, Adhocracia, Remember]
     end
 
     on :message, /\bbugs?\b/i do |m|
@@ -56,4 +44,4 @@ $networks.each do |n|
 end
 
 # Esperar que terminen!
-instances.each { |i| i.join }
+instances.each(&:join)
