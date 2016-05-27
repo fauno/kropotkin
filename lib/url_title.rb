@@ -57,7 +57,7 @@ class UrlTitle
   def anti_blockflare(title)
     if title =~ /cloudflare/i
       title.gsub! /cloudflare/i, 'BlockFlare'
-      title + " - (ノಠ益ಠ)ノ彡┻━┻ "
+      title = title + " - (ノಠ益ಠ)ノ彡┻━┻ "
     end
     title
   end
