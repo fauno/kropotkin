@@ -1,25 +1,25 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    cinch (2.2.5)
-    coderay (1.1.0)
-    ffi (1.9.10)
+    addressable (2.4.0)
+    cinch (2.3.2)
+    coderay (1.1.1)
+    ffi (1.9.14)
     gdbm (1.3.1)
-    hashie (3.4.2)
-    htmlentities (4.3.3)
+    htmlentities (4.3.4)
     method_source (0.8.2)
-    mime-types (1.25.1)
-    nokogiri (1.5.11)
-    opengraph (0.0.4)
-      hashie
-      nokogiri (~> 1.5.0)
-      rest-client (~> 1.6.0)
-    pry (0.10.1)
+    mini_portile2 (2.1.0)
+    nokogiri (1.6.8)
+      mini_portile2 (~> 2.1.0)
+      pkg-config (~> 1.1.7)
+    opengraph_parser (0.2.3)
+      addressable
+      nokogiri
+    pkg-config (1.1.7)
+    pry (0.10.4)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
-    rest-client (1.6.9)
-      mime-types (~> 1.16)
     slop (3.6.0)
 
 PLATFORMS
@@ -30,8 +30,8 @@ DEPENDENCIES
   ffi
   gdbm
   htmlentities
-  opengraph
+  opengraph_parser
   pry
 
 BUNDLED WITH
-   1.12.4
+   1.12.5

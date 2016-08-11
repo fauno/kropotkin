@@ -1,6 +1,6 @@
 # encoding: utf-8
 require 'net/https'
-require 'opengraph'
+require 'opengraph_parser'
 require 'htmlentities'
 
 class UrlTitle
@@ -35,7 +35,7 @@ class UrlTitle
       end
 
       info 'opengraph'
-      resource = OpenGraph.fetch(url)
+      resource = OpenGraph.new(url)
 
       if resource
         title = anti_blockflare(HTMLEntities.new.decode(resource.title))
