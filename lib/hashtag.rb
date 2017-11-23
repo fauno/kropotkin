@@ -17,19 +17,20 @@ class Hashtag
 
     matches.each do |match|
       mensajes = [ "están hablando de #{match}!", 'ping']
+      key = "#{m.channel.name}:#{match}"
 
-      if @dbm.key? match
+      if @dbm.key? key
         if delete
           # FIXME: pasamos a array para borrar un substring?
-          @dbm[match] = (@dbm[match].split(',').map(&:strip) - ["@#{nick}"]).join(', ')
+          @dbm[key] = (@dbm[key].split(',').map(&:strip) - ["@#{nick}"]).join(', ')
         else
-          @dbm[match] += ", @#{nick}" unless @dbm[match].include? nick
+          @dbm[key] += ", @#{nick}" unless @dbm[key].include? nick
         end
       else
-        @dbm[match] = "@#{nick}" unless delete
+        @dbm[key] = "@#{nick}" unless delete
       end
 
-      m.reply "#{@dbm[match]} #{mensajes.sample}" if @dbm[match].split(',').count > 1
+      m.reply "#{@dbm[key]} #{mensajes.sample}" if @dbm[key].split(',').count > 1
     end
   end
 
