@@ -16,6 +16,8 @@ class Hashtag
     delete = m.message.include? 'olvidame'
 
     matches.each do |match|
+      mensajes = [ "están hablando de #{match}!", 'ping']
+
       if @dbm.key? match
         if delete
           # FIXME: pasamos a array para borrar un substring?
@@ -27,7 +29,7 @@ class Hashtag
         @dbm[match] = "@#{nick}" unless delete
       end
 
-      m.reply "#{@dbm[match]}" if @dbm[match].split(',').count > 1
+      m.reply "#{@dbm[match]} #{mensajes.sample}" if @dbm[match].split(',').count > 1
     end
   end
 
