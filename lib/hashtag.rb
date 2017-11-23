@@ -7,7 +7,7 @@ class Hashtag
 
   match /#\w+/, use_prefix: false, method: :handle_hashtag
   def handle_hashtag(m)
-    @dbm ||= GDBM.new("#{m.bot.config.server}.db", 0600, GDBM::SYNC)
+    @dbm ||= GDBM.new("#{m.bot.config.server}_hashtags.db", 0600, GDBM::SYNC)
 
     matches = m.message.scan /#\w+/
     nick = parse_nick(m)
