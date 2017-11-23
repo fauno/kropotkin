@@ -24,7 +24,7 @@ config['networks'].each do |n|
       c.port = n['port']
       c.channels = n['channels']
       c.ssl.use = n['ssl'] unless n['ssl'].nil?
-      c.plugins.plugins = [Empathy, UrlTitle, AcceptInvite, Adhocracia, Remember]
+      c.plugins.plugins = [Empathy, UrlTitle, AcceptInvite, Adhocracia, Remember, Hashtag]
     end
 
     on :message, /\bbugs?\b/i do |m|
