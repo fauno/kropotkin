@@ -16,18 +16,18 @@ class Hashtag
     delete = m.message.include? 'olvidame'
 
     matches.each do |match|
-      if dbm.key? match
+      if @dbm.key? match
         if delete
           # FIXME: pasamos a array para borrar un substring?
-          dbm[match] = (dbm[match].split(',').map(&:strip) - ["@#{nick}"]).join(', ')
+          @dbm[match] = (@dbm[match].split(',').map(&:strip) - ["@#{nick}"]).join(', ')
         else
-          dbm[match] += ", @#{nick}" unless dbm[match].include? nick
+          @dbm[match] += ", @#{nick}" unless @dbm[match].include? nick
         end
       else
-	dbm[match] = "@#{nick}" unless delete
+        @dbm[match] = "@#{nick}" unless delete
       end
 
-      m.reply "#{dbm[match]}" if dbm[match].split(',').count > 1
+      m.reply "#{@dbm[match]}" if @dbm[match].split(',').count > 1
     end
   end
 

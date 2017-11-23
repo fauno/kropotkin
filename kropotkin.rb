@@ -8,6 +8,7 @@ require_relative 'lib/invite'
 require_relative 'lib/adhocracia'
 require_relative 'lib/remember'
 require_relative 'lib/events'
+require_relative 'lib/hashtag'
 
 # Carga de la configuracion
 config = YAML.load_file('config.yml')
@@ -25,8 +26,7 @@ config['networks'].each do |n|
       c.port = n['port']
       c.channels = n['channels'].map { |c| c['channel'] }
       c.ssl.use = n['ssl'] unless n['ssl'].nil?
-      c.plugins.plugins = [Empathy, UrlTitle, AcceptInvite, Adhocracia, Remember, Hashtag]
-      c.plugins.options[Events] = n['channels']
+      c.plugins.plugins = [Empathy, AcceptInvite, Adhocracia, Remember, Hashtag]
     end
 
     on :message, /\bbugs?\b/i do |m|
