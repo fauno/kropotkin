@@ -25,7 +25,7 @@ config['networks'].each do |n|
       c.port = n['port']
       c.channels = n['channels'].map { |c| c['channel'] }
       c.ssl.use = n['ssl'] unless n['ssl'].nil?
-      c.plugins.plugins = [Empathy, AcceptInvite, Adhocracia, Remember, Events]
+      c.plugins.plugins = [Empathy, UrlTitle, AcceptInvite, Adhocracia, Remember, Hashtag]
       c.plugins.options[Events] = n['channels']
     end
 
