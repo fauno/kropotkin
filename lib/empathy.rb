@@ -10,7 +10,10 @@ class Empathy
   match /:[c\(]$/, use_prefix: false, method: :hug
   def hug(m)
     # TODO humanizar las actions
-    Timer(rand(10), shots: 1) { m.channel.action "abraza a #{m.user.nick} :)" }
+    Thread.new do
+      sleep rand(10)
+      m.channel.action "abraza a #{m.user.nick} :)"
+    end
   end
 
   match /\\o\//i, use_prefix: false, method: :cheer
@@ -27,7 +30,7 @@ class Empathy
 
   match /gat(it)?[oa]s?/i, use_prefix: false, method: :gatitos
   def gatitos(m)
-    if /\bmacri/i =~ m.text
+    if /\bmacri/i =~ m.message
       m.reply 'dónde está santiago maldonado?'
     else
       m.reply 'LOS GATITOS SON LO MEJOR'
