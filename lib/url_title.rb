@@ -18,23 +18,16 @@ class UrlTitle
       uri = URI(url)
 
       # icecast devuelve text/html para los los streams..
-      if uri.path.end_with?('ogg', 'mp3', 'ogv', 'webm', 'mp4')
-        info 'es un archivo de medios'
-        m.reply 'no puedo leer eso', false, true
-        next
-      end
+      next if uri.path.end_with?('ogg', 'mp3', 'ogv', 'webm', 'mp4')
 
       # Ignorar lo que no sea html
       Net::HTTP.start uri.host, uri.port,
                       use_ssl: uri.scheme == 'https' do |http|
-        info 'averiguando si es un html'
         unless http.head(uri.path)['content-type'] =~ /\Atext\/html\Z/
-          info 'no lo es'
           next
         end
       end
 
-      info 'opengraph'
       resource = OpenGraph.new(url)
 
       if resource
@@ -56,8 +49,8 @@ class UrlTitle
 
   def anti_blockflare(title)
     if title =~ /cloudflare/i
-      title.gsub! /cloudflare/i, 'BlockFlare'
-      title = title + " - (ノಠ益ಠ)ノ彡┻━┻ "
+      title.gsub! /cloudflare/i, %w(BlockFlare FuckFlare).sample
+      title = title + ' - (ノಠ益ಠ)ノ彡┻━┻ '
     end
     title
   end
