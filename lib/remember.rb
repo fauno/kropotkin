@@ -24,7 +24,8 @@ class Remember
       # recordar donde lo vimos
       seen_in_channel(m.user.nick, m.channel.name)
       # darle la bienvenida
-      m.reply ['bienvenidx!', 'qué tal?', ':)', 'hola', 'hola!', 'o/'].sample, true
+      # TODO aprender como se saluda la gente
+      m.reply ['bienvenidx!', 'qué tal?', ':)', 'hola', 'hola!', 'o/', 'que ondis'].sample, true, false, true
     end
   end
 

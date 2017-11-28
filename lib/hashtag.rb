@@ -16,15 +16,18 @@ class Hashtag
     delete = m.message.include? 'olvidame'
 
     matches.each do |match|
-      if dbm.key? match
+      mensajes = [ "están hablando de #{match}!", 'ping']
+      key = "#{m.channel.name}:#{match}"
+
+      if @dbm.key? key
         if delete
           # FIXME: pasamos a array para borrar un substring?
-          dbm[match] = (dbm[match].split(',').map(&:strip) - ["@#{nick}"]).join(', ')
+          @dbm[key] = (@dbm[key].split(',').map(&:strip) - ["@#{nick}"]).join(', ')
         else
-          dbm[match] += ", @#{nick}" unless dbm[match].include? nick
+          @dbm[key] += ", @#{nick}" unless @dbm[key].include? nick
         end
       else
-	dbm[match] = "@#{nick}" unless delete
+        @dbm[key] = "@#{nick}" unless delete
       end
 
       # HumanMessage monkeypatchs Cinch::Message
