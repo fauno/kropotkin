@@ -33,7 +33,7 @@ class Hashtag
       # HumanMessage monkeypatchs Cinch::Message
       # def reply(text, prefix = false, now = false, always = false)
       # we need: now = true to always reply in the moment
-      m.reply("#{dbm[match]}", false, true) if dbm[match].split(',').count > 1
+      m.reply("#{@dbm[key]} #{mensajes.sample}", false, true) if @dbm[key].split(',').count > 1
     end
   end
 
