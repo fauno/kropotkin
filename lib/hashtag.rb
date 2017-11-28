@@ -27,7 +27,10 @@ class Hashtag
 	dbm[match] = "@#{nick}" unless delete
       end
 
-      m.reply "#{dbm[match]}" if dbm[match].split(',').count > 1
+      # HumanMessage monkeypatchs Cinch::Message
+      # def reply(text, prefix = false, now = false, always = false)
+      # we need: now = true to always reply in the moment
+      m.reply("#{dbm[match]}", false, true) if dbm[match].split(',').count > 1
     end
   end
 
