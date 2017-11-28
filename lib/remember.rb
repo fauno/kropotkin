@@ -16,16 +16,19 @@ class Remember
     @dbm ||= GDBM.new("#{m.bot.config.server}.db", 0600, GDBM::SYNC)
 
     if channels(m.user.nick).include? m.channel.name
-      # no hace falta saludar todo el tiempo :)
-      if [ true, false, false, false, false ].sample
-        m.reply ['o/','\o','ea'].sample, true
-      end
+      m.reply ['o/','\o','ea'].sample, true
     else
       # recordar donde lo vimos
       seen_in_channel(m.user.nick, m.channel.name)
       # darle la bienvenida
       # TODO aprender como se saluda la gente
-      m.reply ['bienvenidx!', 'qué tal?', ':)', 'hola', 'hola!', 'o/', 'que ondis'].sample, true, false, true
+      m.reply ['bienvenidx!',
+        'qué tal?',
+        ':)',
+        'hola',
+        'hola!',
+        'o/',
+        'que ondis'].sample, true, false, true
     end
   end
 
